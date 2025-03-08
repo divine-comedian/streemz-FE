@@ -1,34 +1,31 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // Site
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-interface SiteConfig {
+export type SiteConfig = {
   name: string
-  title: string
-  emoji: string
   description: string
-  localeDefault: string
+  url: string
+  ogImage: string
   links: {
-    docs: string
-    discord: string
     twitter: string
     github: string
+    docs: string
+    discord: string
   }
 }
 
 export const SITE_CANONICAL = "https://turboeth.xyz"
 
 export const siteConfig: SiteConfig = {
-  name: "TurboETH",
-  title: "TurboETH - Web3 App Template",
-  emoji: "⚡",
-  description:
-    "Start building full-stack Web3 applications in minutes with TurboETH.",
-  localeDefault: "en",
+  name: "Streemz",
+  description: "Decentralized music streaming platform with fair artist compensation",
+  url: "https://streemz.xyz",
+  ogImage: "/og.jpg",
   links: {
-    docs: "https://docs.turboeth.xyz/overview",
-    discord: "https://discord.gg/U4jy7Xfh76",
-    twitter: "https://twitter.com/district_labs",
-    github: "https://github.com/turbo-eth/template-web3-app",
+    twitter: "https://twitter.com/streemz",
+    github: "https://github.com/streemz",
+    docs: "https://docs.streemz.xyz",
+    discord: "https://discord.gg/streemz",
   },
 }
 

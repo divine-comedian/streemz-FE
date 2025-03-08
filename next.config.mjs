@@ -6,12 +6,27 @@ import withPWA from "next-pwa"
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "avatars.githubusercontent.com",
-      "app.aave.com",
-      "images.unsplash.com",
-      "cloudflare-ipfs.com",
-      "gateway.ipfs.io",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'app.aave.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cloudflare-ipfs.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'gateway.ipfs.io',
+      },
     ],
   },
   env: {

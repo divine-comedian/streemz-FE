@@ -31,7 +31,7 @@ export const env = createEnv({
     NEXT_PUBLIC_INFURA_API_KEY: z.string().min(1).optional(),
     NEXT_PUBLIC_LIVEPEER_API_KEY: z.string().min(1).optional(),
     NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
-    NEXT_PUBLIC_WC_PROJECT_ID: z.string().min(1),
+    NEXT_PUBLIC_WC_PROJECT_ID: z.string().min(1).optional().default("development"),
   },
   runtimeEnv: {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
@@ -55,4 +55,6 @@ export const env = createEnv({
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_WC_PROJECT_ID: process.env.NEXT_PUBLIC_WC_PROJECT_ID,
   },
+  // Skip validation in development
+  skipValidation: process.env.NODE_ENV === "development",
 })

@@ -1,6 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { WalletConnect } from "@/components/blockchain/wallet-connect"
+import { useAccount } from "wagmi"
 
 import useScroll from "@/lib/hooks/use-scroll"
 import { cn } from "@/lib/utils"
@@ -11,6 +14,7 @@ import { ModeToggle } from "@/components/shared/mode-toggle"
 
 export function SiteHeader() {
   const scrolled = useScroll(0)
+  const { isConnected } = useAccount()
 
   return (
     <header
@@ -30,6 +34,28 @@ export function SiteHeader() {
             Dashboard
           </Link>
           <ModeToggle />
+        </div>
+        <div className="flex items-center gap-4">
+          {isConnected ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-gray-400 hover:text-white"
+              asChild
+            >
+              <Link href="/dashboard">My Account</Link>
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-gray-400 hover:text-white"
+              asChild
+            >
+              <Link href="/subscribe">Subscribe</Link>
+            </Button>
+          )}
+          <WalletConnect />
         </div>
       </div>
     </header>

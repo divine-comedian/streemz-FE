@@ -1,12 +1,12 @@
 "use client"
 
 import { ReactNode } from "react"
-import { ThemeProvider } from "next-themes"
-import { Provider as RWBProvider } from "react-wrap-balancer"
 
 import { useIsMounted } from "@/lib/hooks/use-is-mounted"
+import { Toaster } from "@/components/ui/toaster"
 import HandleWalletEvents from "@/components/blockchain/handle-wallet-events"
-import { RainbowKit } from "@/components/providers/rainbow-kit"
+import { RainbowKitProviderWrapper } from "@/components/providers/rainbow-kit"
+import { ThemeProvider } from "@/components/providers/theme-provider"
 
 interface RootProviderProps {
   children: ReactNode
@@ -15,17 +15,16 @@ interface RootProviderProps {
 export default function RootProvider({ children }: RootProviderProps) {
   const isMounted = useIsMounted()
   return isMounted ? (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <RWBProvider>
-        <RainbowKit>
-          <HandleWalletEvents>{children}</HandleWalletEvents>
-        </RainbowKit>
-      </RWBProvider>
-    </ThemeProvider>
+    <RainbowKitProviderWrapper>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <HandleWalletEvents>{children}</HandleWalletEvents>
+        <Toaster />
+      </ThemeProvider>
+    </RainbowKitProviderWrapper>
   ) : null
 }

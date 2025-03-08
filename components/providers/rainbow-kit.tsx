@@ -2,7 +2,7 @@
 
 import "@rainbow-me/rainbowkit/styles.css"
 
-import { type ReactNode } from "react"
+import { ReactNode } from "react"
 import { env } from "@/env.mjs"
 import {
   darkTheme,
@@ -16,9 +16,10 @@ import { WagmiProvider } from "wagmi"
 import { chains, transports } from "@/config/networks"
 import { siteConfig } from "@/config/site"
 import { useColorMode } from "@/lib/state/color-mode"
+import { config } from "@/lib/wagmi"
 
 const wagmiConfig = getDefaultConfig({
-  appName: siteConfig.title,
+  appName: siteConfig.name,
   projectId: env.NEXT_PUBLIC_WC_PROJECT_ID,
   chains,
   transports,
@@ -27,13 +28,21 @@ const wagmiConfig = getDefaultConfig({
 
 const queryClient = new QueryClient()
 
-export function RainbowKit({ children }: { children: ReactNode }) {
-  const [colorMode] = useColorMode()
+interface RainbowKitProviderProps {
+  children: ReactNode
+}
+
+export function RainbowKitProviderWrapper({
+  children,
+}: RainbowKitProviderProps) {
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
-          theme={colorMode == "dark" ? darkTheme() : lightTheme()}
+          appInfo={{
+            appName: siteConfig.name,
+          }}
+          theme={darkTheme()}
         >
           {children}
         </RainbowKitProvider>

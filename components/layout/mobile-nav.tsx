@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import Link, { LinkProps } from "next/link"
 import { useRouter } from "next/navigation"
 import {
@@ -50,7 +50,7 @@ export function MobileNav() {
             variant="ghost"
             className="ml-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
           >
-            <LuMenu className="h-5 w-5" />
+            <LuMenu className="size-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
@@ -82,7 +82,7 @@ export function MobileNav() {
                 <AccordionContent>
                   <ul className="flex flex-col gap-2">
                     {integrationCategories.map((category) => (
-                      <>
+                      <React.Fragment key={category}>
                         <h4 className="text-sm font-medium leading-none">
                           {category.charAt(0).toUpperCase() + category.slice(1)}
                         </h4>
@@ -101,7 +101,7 @@ export function MobileNav() {
                               onOpenChange={setOpen}
                             />
                           ))}
-                      </>
+                      </React.Fragment>
                     ))}
                   </ul>
                 </AccordionContent>
@@ -193,7 +193,7 @@ const NavMenuListItem = ({
   onOpenChange,
 }: NavMenuListItemProps) => {
   return (
-    <li key={name}>
+    <li>
       <MobileLink
         onOpenChange={onOpenChange}
         href={href}
@@ -206,7 +206,7 @@ const NavMenuListItem = ({
             alt="icon"
             height={16}
             width={16}
-            className="h-4 w-4"
+            className="size-4"
           />
           <span className="text-sm font-medium leading-none">{name}</span>
         </div>

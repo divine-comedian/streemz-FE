@@ -1,42 +1,35 @@
-import { HTMLAttributes } from "react"
-import { type Address } from "viem"
-import { useAccount } from "wagmi"
+import { useChainId } from "wagmi"
 
 import { cn } from "@/lib/utils"
+import { getBlockExplorerUrl } from "@/lib/utils/getBlockExplorerUrl"
 
-interface BlockExplorerLinkProps extends HTMLAttributes<HTMLSpanElement> {
-  address: Address | undefined
+export interface BlockExplorerLinkProps {
+  address: string | undefined
+  className?: string
   showExplorerName?: boolean
   type?: "address" | "tx"
 }
 
-export const BlockExplorerLink = ({
+export function BlockExplorerLink({
   address,
-  children,
   className,
-  showExplorerName,
+  showExplorerName = false,
   type = "address",
-  ...props
-}: BlockExplorerLinkProps) => {
-  const { chain } = useAccount()
-  const blockExplorer = chain?.blockExplorers?.default
+}: BlockExplorerLinkProps) {
+  const chainId = useChainId()
 
   if (!address) return null
 
+  const blockExplorerUrl = getBlockExplorerUrl(address, chainId, type)
+
   return (
-    <span
-      className={cn("overflow-x-auto font-medium underline", className)}
-      {...props}
+    <a
+      href={blockExplorerUrl}
+      target="_blank"
+      rel="noreferrer"
+      className={cn("underline", className)}
     >
-      {blockExplorer && (
-        <a
-          href={`${blockExplorer.url}/${type}/${address}`}
-          rel="noreferrer"
-          target="_blank"
-        >
-          {showExplorerName ? blockExplorer.name : children ?? address}
-        </a>
-      )}
-    </span>
+      {showExplorerName ? "Block Explorer" : "View on Explorer"}
+    </a>
   )
 }

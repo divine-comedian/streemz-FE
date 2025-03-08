@@ -1,54 +1,88 @@
-import "@/styles/app.css"
 import "@/styles/globals.css"
 
-import { ReactNode } from "react"
-import { env } from "@/env.mjs"
+import { Metadata, Viewport } from "next"
+import { Inter } from "next/font/google"
 
 import { siteConfig } from "@/config/site"
-import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
-import { Toaster } from "@/components/ui/toaster"
-import RootProvider from "@/components/providers/root-provider"
+import { MusicPlayer } from "@/components/app/MusicPlayer"
+import { SiteFooter } from "@/components/layout/site-footer"
+import { SiteHeader } from "@/components/layout/site-header"
+import { Providers } from "@/components/providers"
 
-const url = env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+const inter = Inter({ subsets: ["latin"] })
 
-export const metadata = {
-  metadataBase: new URL(url),
-  title: `${siteConfig.name} - ${siteConfig.description}`,
-  description: siteConfig.description,
-  manifest: "/manifest.json",
-  icons: {
-    icon: "/favicon.ico",
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
-  themeColor: "#feefc4",
+  metadataBase: new URL(siteConfig.url),
+  description: siteConfig.description,
+  keywords: [
+    "Streemz",
+    "Music",
+    "Streaming",
+    "Web3",
+    "Superfluid",
+    "Ethereum",
+    "Artists",
+    "Decentralized",
+  ],
+  authors: [
+    {
+      name: "Streemz Team",
+    },
+  ],
+  creator: "Streemz Team",
   openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
-    url: url?.toString(),
     siteName: siteConfig.name,
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
+    creator: "@streemz",
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+}
+
+interface RootLayoutProps {
+  children: React.ReactNode
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={cn(
-            "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable
-          )}
-        >
-          <RootProvider>{children}</RootProvider>
-          <Toaster />
-        </body>
-      </html>
-    </>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          inter.className
+        )}
+      >
+        <Providers>
+          <div className="relative flex min-h-screen flex-col bg-gray-950 text-white">
+            <SiteHeader />
+            <main className="flex-1 pb-20">{children}</main>
+            <MusicPlayer />
+            <SiteFooter />
+          </div>
+        </Providers>
+      </body>
+    </html>
   )
 }

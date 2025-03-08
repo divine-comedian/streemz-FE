@@ -54,11 +54,8 @@ function MainNavMenu() {
           <NavigationMenuContent className="max-h-[768px] overflow-y-scroll">
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[768px] lg:grid-cols-3">
               {integrationCategories.map((category) => (
-                <>
-                  <h4
-                    key={category}
-                    className="text-lg font-medium leading-none md:col-span-2 lg:col-span-3"
-                  >
+                <React.Fragment key={category}>
+                  <h4 className="text-lg font-medium leading-none md:col-span-2 lg:col-span-3">
                     {category.charAt(0).toUpperCase() + category.slice(1)}
                   </h4>
                   <Separator className="md:col-span-2 lg:col-span-3" />
@@ -74,7 +71,7 @@ function MainNavMenu() {
                         darkImage={imgLight}
                       />
                     ))}
-                </>
+                </React.Fragment>
               ))}
             </ul>
           </NavigationMenuContent>
@@ -107,7 +104,7 @@ const NavMenuListItem = ({
   darkImage,
 }: NavMenuListItemProps) => {
   return (
-    <li className="w-full min-w-full" key={name}>
+    <li className="w-full min-w-full">
       <NavigationMenuLink asChild>
         <a
           href={href}
@@ -120,7 +117,7 @@ const NavMenuListItem = ({
               alt="icon"
               height={24}
               width={24}
-              className="h-6 w-6"
+              className="size-6"
             />
             <span className="text-base font-medium leading-none">{name}</span>
           </div>
