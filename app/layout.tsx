@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { Montserrat } from "next/font/google"
 
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
@@ -10,7 +10,10 @@ import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { Providers } from "@/components/providers"
 
-const inter = Inter({ subsets: ["latin"] })
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+})
 
 export const metadata: Metadata = {
   title: {
@@ -71,7 +74,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          inter.className
+          montserrat.className
         )}
       >
         <Providers>

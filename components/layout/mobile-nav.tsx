@@ -3,11 +3,8 @@
 import React, { useState } from "react"
 import Link, { LinkProps } from "next/link"
 import { useRouter } from "next/navigation"
-import {
-  integrationCategories,
-  turboIntegrations,
-} from "@/data/turbo-integrations"
 import { LuMenu } from "react-icons/lu"
+import { useAccount } from "wagmi"
 
 import { menuDashboard } from "@/config/menu-dashboard"
 import { siteConfig } from "@/config/site"
@@ -22,12 +19,14 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { WalletConnect } from "@/components/blockchain/wallet-connect"
 import { LightDarkImage } from "@/components/shared/light-dark-image"
 
 import { ModeToggle } from "../shared/mode-toggle"
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
+  const { isConnected } = useAccount()
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -36,7 +35,7 @@ export function MobileNav() {
           <LightDarkImage
             LightImage="/logo-dark.png"
             DarkImage="/logo-light.png"
-            alt="TurboETH"
+            alt="Streemz"
             className="rounded-full"
             height={32}
             width={32}
@@ -65,7 +64,7 @@ export function MobileNav() {
             <LightDarkImage
               LightImage="/logo-dark.png"
               DarkImage="/logo-light.png"
-              alt="TurboETH"
+              alt="Streemz"
               height={32}
               width={32}
             />
@@ -75,37 +74,6 @@ export function MobileNav() {
         <ScrollArea className="my-4 mr-4 h-[calc(100vh-8rem)] pb-10">
           <div className="flex flex-col space-y-4">
             <Accordion type="single" collapsible className="mx-auto w-full">
-              <AccordionItem value="integrations">
-                <AccordionTrigger className="text-base font-medium">
-                  Integrations
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ul className="flex flex-col gap-2">
-                    {integrationCategories.map((category) => (
-                      <React.Fragment key={category}>
-                        <h4 className="text-sm font-medium leading-none">
-                          {category.charAt(0).toUpperCase() + category.slice(1)}
-                        </h4>
-                        <Separator className="col-span-3" />
-                        {Object.values(turboIntegrations)
-                          .filter(
-                            (integration) => integration.category === category
-                          )
-                          .map(({ name, href, imgDark, imgLight }) => (
-                            <NavMenuListItem
-                              key={name}
-                              name={name}
-                              href={href}
-                              lightImage={imgDark}
-                              darkImage={imgLight}
-                              onOpenChange={setOpen}
-                            />
-                          ))}
-                      </React.Fragment>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
               <AccordionItem value="dashboard">
                 <AccordionTrigger className="text-base font-medium">
                   Dashboard
@@ -135,12 +103,32 @@ export function MobileNav() {
               </AccordionItem>
             </Accordion>
             <Link
-              href="https://docs.turboeth.xyz/overview"
+              href="/subscribe"
               className="font-medium"
+              onClick={() => setOpen(false)}
             >
-              Documentation
+              Subscribe
             </Link>
+            <Link
+              href="/register-artist"
+              className="font-medium"
+              onClick={() => setOpen(false)}
+            >
+              Register as Artist
+            </Link>
+            {isConnected ? (
+              <Link
+                href="/dashboard"
+                className="font-medium"
+                onClick={() => setOpen(false)}
+              >
+                My Account
+              </Link>
+            ) : null}
             <Separator />
+            <div className="py-2">
+              <WalletConnect />
+            </div>
           </div>
         </ScrollArea>
       </SheetContent>
@@ -174,43 +162,5 @@ function MobileLink({
     >
       {children}
     </Link>
-  )
-}
-
-interface NavMenuListItemProps {
-  name: string
-  href: string
-  lightImage: string
-  darkImage: string
-  onOpenChange?: (open: boolean) => void
-}
-
-const NavMenuListItem = ({
-  name,
-  href,
-  lightImage,
-  darkImage,
-  onOpenChange,
-}: NavMenuListItemProps) => {
-  return (
-    <li>
-      <MobileLink
-        onOpenChange={onOpenChange}
-        href={href}
-        className="block select-none space-y-1 rounded-md py-3 pl-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-      >
-        <div className="flex items-center space-x-2">
-          <LightDarkImage
-            LightImage={lightImage}
-            DarkImage={darkImage}
-            alt="icon"
-            height={16}
-            width={16}
-            className="size-4"
-          />
-          <span className="text-sm font-medium leading-none">{name}</span>
-        </div>
-      </MobileLink>
-    </li>
   )
 }
